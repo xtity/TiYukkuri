@@ -9,7 +9,6 @@ var win = Ti.UI.createWindow({
 	backgroundColor:'white'
 });
 
-// TODO: write your module tests here
 var TiYukkuri = require('com.xtity.mod.TiYukkuri');
 Ti.API.info("module is => " + TiYukkuri);
 
@@ -67,7 +66,6 @@ for(var i=0, ilen=voiceKindNames.length; i<ilen; i++){
 picker.add([column]);
 win.add(picker);
 
-
 // button
 var button = Titanium.UI.createButton({
 	title: 'say'
@@ -84,12 +82,6 @@ button.addEventListener('click', function() {
 win.add(button);
 
 win.open();
-
-
-// label.text = TiYukkuri.example();
-
-Ti.API.info("module exampleProp is => " + TiYukkuri.exampleProp);
-TiYukkuri.exampleProp = "This is a test value";
 
 // if (Ti.Platform.name == "android") {
 	// var proxy = TiYukkuri.createExample({
