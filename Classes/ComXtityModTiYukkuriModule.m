@@ -53,9 +53,7 @@ void * file_load(const char * file, int * psize) {
     *psize = st.st_size;
     return data;
 }
-
-
-
+///// custom /////
 
 
 #pragma mark Lifecycle
@@ -77,7 +75,6 @@ void * file_load(const char * file, int * psize) {
 	 name: @"AquesTalk2DaDoneNotify"
 	 object:nil];
     
-	
 	NSLog(@"[INFO] %@ loaded",self);
 }
 
@@ -131,50 +128,16 @@ void * file_load(const char * file, int * psize) {
 }
 
 #pragma Public APIs
-
--(id)example:(id)args
-{
-	// example method
-	return @"hello world";
-}
-
--(id)exampleProp
-{
-	// example property getter
-	return @"hello world";
-}
-
--(void)setExampleProp:(id)value
-{
-	// example property setter
-}
-
-//-(void)say:(id)args
 -(id)say:(id)args
 {
     
     ENSURE_SINGLE_ARG(args, NSDictionary);
-    
-//    NSNumber *x;
-//    NSString *word;
-//    NSString *voiceKindName;
-    
-//    ENSURE_ARG_OR_NIL_FOR_KEY(x, args, @"x", NSNumber);
-//    ENSURE_ARG_OR_NIL_FOR_KEY(word, args, @"word", NSString)
-//    ENSURE_ARG_OR_NIL_FOR_KEY(voiceKindName, args, @"voiceKindName", NSString)
-
-//    NSString *word = @"ゆっくりしていってね";
-//    NSString *voiceKindName = @"aq_yukkuri.phont";
     
     NSString *word = [TiUtils stringValue:@"word" properties:args def:YES];
     NSString *voiceKindName = [TiUtils stringValue:@"voiceKindName" properties:args def:YES];
 
     NSLog(@"[INFO] word: %@", word);
     NSLog(@"[INFO] voiceKindName: %@", voiceKindName);
-
-    
-//	// テキストボックスから文字列取得
-//	NSString *word = [textfield text];
 	
 	// 文字コードをShiftJISに変換
 	char *sjis = (char*)[word cStringUsingEncoding:NSShiftJISStringEncoding];
@@ -184,11 +147,9 @@ void * file_load(const char * file, int * psize) {
 	if(AquesTalk2Da_IsPlay(m_pAqTk)){
 		AquesTalk2Da_Stop(m_pAqTk);
 	}
+    
 	//終了通知イベントの作成　name部分はNSNotificationCenterに設定した値に合わせる
 	NSNotification *notification = [NSNotification notificationWithName:@"AquesTalk2DaDoneNotify" object:self userInfo:nil];
-	//非同期の音声合成出力
-    //	int iret = AquesTalk2Da_Play(m_pAqTk, sjis, 100, nil, notification);
-    //    int iret = AquesTalk2Da_Play(m_pAqTk, sjis, 100, [self readPhont], notification);
     
     NSString *path = [NSString stringWithFormat:@"modules/%@/phonts/%@", [self moduleId], voiceKindName];
     NSLog(@"[INFO] path: %@", path);
@@ -203,8 +164,8 @@ void * file_load(const char * file, int * psize) {
     int size;
     void *pPhont = file_load(pathUrlUTF8Str, &size);
     
+    //非同期の音声合成出力
     int iret = AquesTalk2Da_Play(m_pAqTk, sjis, 100, pPhont, notification);
-//    int iret = AquesTalk2Da_Play(m_pAqTk, sjis, 100, nil, notification);
 	if(iret!=0){
 		// 合成失敗
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"音声記号列の指定が正しくありません"
@@ -213,7 +174,6 @@ void * file_load(const char * file, int * psize) {
 		[alert release];
 		return;
 	}
-////	onPlayLabel.text = @"Playing...";
 }
 
 - (void)daDone:(NSNotification*)notification
