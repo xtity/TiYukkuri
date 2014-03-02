@@ -190,18 +190,18 @@ void * file_load(const char * file, int * psize) {
     //	int iret = AquesTalk2Da_Play(m_pAqTk, sjis, 100, nil, notification);
     //    int iret = AquesTalk2Da_Play(m_pAqTk, sjis, 100, [self readPhont], notification);
     
+    NSString *path = [NSString stringWithFormat:@"modules/%@/phonts/%@", [self moduleId], voiceKindName];
+    NSLog(@"[INFO] path: %@", path);
     
+    NSURL *pathUrl = [TiUtils toURL:path relativeToURL:[[NSBundle mainBundle] bundleURL]];
+    NSString *pathUrlStr = [pathUrl path];
+    NSLog(@"[INFO] pathUrlStr: %@", pathUrlStr);
     
-    NSString *homeDir = NSHomeDirectory();
-//NSString *docDir = [homeDir stringByAppendingPathComponent:@"TiYukkuri.app/aq_yukkuri.phont"];
-//    NSString *voiceKindName = phont_kinds[[self.voiceKindPicker selectedRowInComponent:0]];
-    NSString *docDir = [homeDir stringByAppendingPathComponent:[@"TiYukkuri.app/" stringByAppendingPathComponent:voiceKindName]];
-    const char *dir = [docDir UTF8String];
-    
-    NSLog(@"[INFO] docDir: %@", docDir);
+    const char *pathUrlUTF8Str = pathUrlStr.UTF8String;
+    NSLog(@"[INFO] pathUrlUTF8Str: %s", pathUrlUTF8Str);
     
     int size;
-    void *pPhont = file_load(dir, &size);
+    void *pPhont = file_load(pathUrlUTF8Str, &size);
     
     int iret = AquesTalk2Da_Play(m_pAqTk, sjis, 100, pPhont, notification);
 //    int iret = AquesTalk2Da_Play(m_pAqTk, sjis, 100, nil, notification);
